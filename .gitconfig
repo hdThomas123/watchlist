@@ -1,0 +1,7 @@
+[user]
+	name = Thomas Lee
+	email = lgwthomas@gmail.com
+[http]
+	proxy = 127.0.0.1:7890
+[https]
+	proxy = 127.0.0.1:7890
