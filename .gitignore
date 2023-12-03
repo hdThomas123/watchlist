@@ -3,3 +3,4 @@
 __pychahce__
 .DS_Store
 .env
+*.db
