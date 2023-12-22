@@ -52,16 +52,24 @@ def forge():
 
     name = 'LGW'
     movies = [
-        {'title': 'My Neighbor Totoro', 'year': '1988'},
-        {'title': 'Dead Poets Society', 'year': '1989'},
-        {'title': 'A Perfect World', 'year': '1993'},
-        {'title': 'Leon', 'year': '1994'},
-        {'title': 'Mahjong', 'year': '1996'},
-        {'title': 'Swallowtail Butterfly', 'year': '1996'},
-        {'title': 'King of Comedy', 'year': '1999'},
-        {'title': 'Devils on the Doorstep', 'year': '1999'},
-        {'title': 'WALL-E', 'year': '2008'},
-        {'title': 'The Pork of Music', 'year': '2012'},
+        {'title': '战狼2', 'year': '2017'},
+        {'title': '哪吒之魔童降世', 'year': '2017'},
+        {'title': '流浪地球', 'year': '2019'},
+        {'title': '复仇者联盟4', 'year': '2019'},
+        {'title': '红海行动', 'year': '2018'},
+        {'title': '唐人街探案2', 'year': '2018'},
+        {'title': '我不是药神', 'year': '2018'},
+        {'title': '中国机长', 'year': '2019'},
+        {'title': '速度与激情8', 'year': '2017'},
+        {'title': '西虹市首富', 'year': '2018'},
+        {'title': '复仇者联盟3', 'year': '2018'},
+        {'title': '捉妖记2', 'year': '2018'},
+        {'title': '八佰', 'year': '2020'},
+        {'title': '姜子牙', 'year': '2020'},
+        {'title': '我和我的家乡', 'year': '2020'},
+        {'title': '你好，李焕英', 'year': '2021'},
+        {'title': '长津湖', 'year': '2021'},
+        {'title': '速度与激情9', 'year': '2021'},
     ]
 
     user = User(name=name)
@@ -146,13 +154,13 @@ def index():
         year = request.form['year']
 
         if not title or not year or len(year) != 4 or len(title) > 60:
-            flash('Invalid input.')
+            flash('无效输入。')
             return redirect(url_for('index'))
 
         movie = Movie(title=title, year=year)
         db.session.add(movie)
         db.session.commit()
-        flash('Item created.')
+        flash('条目已创建。')
         return redirect(url_for('index'))
 
     movies = Movie.query.all()
@@ -169,13 +177,13 @@ def edit(movie_id):
         year = request.form['year']
 
         if not title or not year or len(year) != 4 or len(title) > 60:
-            flash('Invalid input.')
+            flash('无效输入。')
             return redirect(url_for('edit', movie_id=movie_id))
 
         movie.title = title
         movie.year = year
         db.session.commit()
-        flash('Item updated.')
+        flash('条目已更新')
         return redirect(url_for('index'))
 
     return render_template('edit.html', movie=movie)
@@ -187,7 +195,7 @@ def delete(movie_id):
     movie = Movie.query.get_or_404(movie_id)
     db.session.delete(movie)
     db.session.commit()
-    flash('Item deleted.')
+    flash('条目已删除。')
     return redirect(url_for('index'))
 
 
@@ -198,13 +206,13 @@ def settings():
         name = request.form['name']
 
         if not name or len(name) > 20:
-            flash('Invalid input.')
+            flash('无效输入。')
             return redirect(url_for('settings'))
 
         user = User.query.first()
         user.name = name
         db.session.commit()
-        flash('Settings updated.')
+        flash('设置已更新。')
         return redirect(url_for('index'))
 
     return render_template('settings.html')
@@ -217,17 +225,17 @@ def login():
         password = request.form['password']
 
         if not username or not password:
-            flash('Invalid input.')
+            flash('无效输入。')
             return redirect(url_for('login'))
 
         user = User.query.first()
 
         if username == user.username and user.validate_password(password):
             login_user(user)
-            flash('Login success.')
+            flash('登录成功。')
             return redirect(url_for('index'))
 
-        flash('Invalid username or password.')
+        flash('无效的用户名或密码。')
         return redirect(url_for('login'))
 
     return render_template('login.html')
@@ -237,5 +245,12 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('Goodbye.')
+    flash('您已退出。')
     return redirect(url_for('index'))
+
+
+@app.route("/search",methods=['GET', 'POST'])
+@login_required
+def search():
+    movies = Movie.query.filter(Movie.title == "战狼2").all()
+    return render_template('index.html', movies=movies)

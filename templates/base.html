@@ -4,7 +4,7 @@
     {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ user.name }}'s Watchlist</title>
+    <title>{{ user.name }}的电影管理系统</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
     {% endblock %}
@@ -15,16 +15,16 @@
 {% endfor %}
     <h2>
         <img alt="Avatar" class="avatar" src="{{ url_for('static', filename='images/avatar.png') }}">
-        {{ user.name }}'s Watchlist
+        {{ user.name }}的电影管理系统
     </h2>
     <nav>
         <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('index') }}">主页</a></li>
             {% if current_user.is_authenticated %}
-            <li><a href="{{ url_for('settings') }}">Settings</a></li>
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            <li><a href="{{ url_for('settings') }}">设置</a></li>
+            <li><a href="{{ url_for('logout') }}">退出</a></li>
             {% else %}
-            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('login') }}">登录</a></li>
             {% endif %}
         </ul>
     </nav>
